@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="StoreEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customers" EntityType="StoreModel.Customer" />
+    <EntitySet Name="Imports" EntityType="StoreModel.Import" />
+    <EntitySet Name="Import_Product" EntityType="StoreModel.Import_Product" />
+    <EntitySet Name="OrderDetails" EntityType="StoreModel.OrderDetail" />
+    <EntitySet Name="Orders" EntityType="StoreModel.Order" />
+    <EntitySet Name="Products" EntityType="StoreModel.Product" />
+    <EntitySet Name="sysdiagrams" EntityType="StoreModel.sysdiagram" />
+    <EntitySet Name="Users" EntityType="StoreModel.User" />
+    <AssociationSet Name="FK_Import_Product_Import" Association="StoreModel.FK_Import_Product_Import">
+      <End Role="Import" EntitySet="Imports" />
+      <End Role="Import_Product" EntitySet="Import_Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Import_Product_Product" Association="StoreModel.FK_Import_Product_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Import_Product" EntitySet="Import_Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetails_Orders" Association="StoreModel.FK_OrderDetails_Orders">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetails_Product" Association="StoreModel.FK_OrderDetails_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_User" Association="StoreModel.FK_Orders_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Cusname" />
+    </Key>
+    <Property Name="Cusname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cusAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Product_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cusphone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Product_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Import">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="DateImport" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Import_Product" Relationship="StoreModel.FK_Import_Product_Import" FromRole="Import" ToRole="Import_Product" />
+  </EntityType>
+  <EntityType Name="Import_Product">
+    <Key>
+      <PropertyRef Name="ImportId" />
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ImportId" Type="Int32" Nullable="false" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Import" Relationship="StoreModel.FK_Import_Product_Import" FromRole="Import_Product" ToRole="Import" />
+    <NavigationProperty Name="Product" Relationship="StoreModel.FK_Import_Product_Product" FromRole="Import_Product" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="OrderDetailID" />
+    </Key>
+    <Property Name="OrderDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="OrderID" Type="Int32" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="StoreModel.FK_OrderDetails_Orders" FromRole="OrderDetail" ToRole="Order" />
+    <NavigationProperty Name="Product" Relationship="StoreModel.FK_OrderDetails_Product" FromRole="OrderDetail" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderShipAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Orderstatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="OrderDetails" Relationship="StoreModel.FK_OrderDetails_Orders" FromRole="Order" ToRole="OrderDetail" />
+    <NavigationProperty Name="User" Relationship="StoreModel.FK_Orders_User" FromRole="Order" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Price" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Quantity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Import_Product" Relationship="StoreModel.FK_Import_Product_Product" FromRole="Product" ToRole="Import_Product" />
+    <NavigationProperty Name="OrderDetails" Relationship="StoreModel.FK_OrderDetails_Product" FromRole="Product" ToRole="OrderDetail" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserDOB" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserGender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="UserRole" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Orders" Relationship="StoreModel.FK_Orders_User" FromRole="User" ToRole="Order" />
+  </EntityType>
+  <Association Name="FK_Import_Product_Import">
+    <End Type="StoreModel.Import" Role="Import" Multiplicity="1" />
+    <End Type="StoreModel.Import_Product" Role="Import_Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Import">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Import_Product">
+        <PropertyRef Name="ImportId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Import_Product_Product">
+    <End Type="StoreModel.Product" Role="Product" Multiplicity="1" />
+    <End Type="StoreModel.Import_Product" Role="Import_Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="Import_Product">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetails_Orders">
+    <End Type="StoreModel.Order" Role="Order" Multiplicity="1" />
+    <End Type="StoreModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="OrderID" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetails_Product">
+    <End Type="StoreModel.Product" Role="Product" Multiplicity="1" />
+    <End Type="StoreModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_User">
+    <End Type="StoreModel.User" Role="User" Multiplicity="1" />
+    <End Type="StoreModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
