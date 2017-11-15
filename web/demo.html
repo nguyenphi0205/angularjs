@@ -1,0 +1,57 @@
+<html ng-app="demo">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+
+</head>
+
+<body>
+    <script type="text/javascript">
+
+        var app = angular.module('demo', [])
+            .controller('Hello', function ($scope, $http) {
+                $scope.greeting     = [];
+                var url = "http://localhost:60610/api/PETS/GetProduct";
+                $http({
+                    method: 'GET',
+                    url: url,
+                }).then(function successCallback(response) {
+
+                    angular.forEach(response.data, function (obj) {
+                        $scope.greeting.push(obj);
+                    });
+                    console.log($scope.greeting);
+                }, function errorCallback(response) {
+                    console.log('Failed');
+                });
+
+            });
+    </script>
+
+    <div ng-controller="Hello">
+
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>productname</th>
+                <th>price</th>
+                <th>description</th>
+                <th>quantity</th>
+            </tr>
+            <tr ng-repeat="cus in greeting">
+                <td>{{cus.ID}}</td>
+                <td>{{cus.name}}</td>
+                <td>{{cus.price}}</td>
+                <td>{{cus.des}}</td>
+                <td>{{cus.quantity}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

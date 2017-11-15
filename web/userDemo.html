@@ -1,0 +1,136 @@
+<html lang="en" ng-app="demoUser">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+
+</head>
+
+<body>
+    <script type="text/javascript">
+
+        var app = angular.module('demoUser', [])
+            .controller('User', function ($scope, $http) {
+                $scope.users = [];
+                var url = "http://localhost:60610/api/User/GetAllUser";
+               // var urldelete = "http://localhost:60610/api/User/DeleteUser?id=";
+                $http({
+                    method: 'GET',
+                    url: url,
+                }).then(function successCallback(response) {
+
+                    angular.forEach(response.data, function (obj) {
+                        $scope.users.push(obj);
+                    });
+                    console.log($scope.users);
+                }, function errorCallback(response) {
+                    console.log(Error);
+                });
+                // $scope.EID = {};
+                // $scope.EName = {};
+                // $scope.EPss = {};
+                // $scope.obj={
+                //     $scope.EName ,
+                //     $scope.EPss
+                // }
+                //     s.obj = {
+                //         $scope.EID,
+                //         $scope.DID
+                //     }
+                //         (id, obj)=>{
+                // url + id,
+                //     data:{
+                //     s.obj
+                // }
+                //    ID: $scope.EID ;
+                //    NAme: $scope.EName ;
+                //    PAss: $scope.EPss;
+                //    obj: $scope.obj = {
+                //         NAme,
+                //         PAss
+                //     }
+                $scope.Edit = function () {
+                    $http({
+                        method: 'POST',
+                        url: 'http://localhost:60610/api/User/UpdateUser',
+                        data: {
+                            UserID: $scope.ID,
+                            UserName: $scope.name,
+                            password: $scope.pass,
+                        },
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    }).then(function successCallback(response) {
+                        console.log('thanh cong');
+
+                    }, function errorCallback(response) {
+                        console.log(Error);
+                    });
+                };
+
+
+                $scope.DeleteUser = function (param) {
+                    $http({
+                        method: "POST",
+                        url: 'http://localhost:60610/api/User/DeleteUser?id=' + param,
+
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                      
+
+                    }).then(function successCallback(response) {
+                        console.log('thanh cong');
+
+                    }, function errorCallback(response) {
+                        console.log(Error);
+                    });
+                };
+
+
+            });
+    </script>
+    <a href="RegisterUser.html">Add New staff </a> 
+    <div ng-controller="User">
+        <!-- <input  type="text" ng-model="DID"/> <button><a ng-click="DeleteUser()">delete</a></button> -->
+
+        <div>
+            <a>EDit</a>
+            <a>ID</a>
+            <input type="text" ng-model="ID">
+            <a>Name</a>
+            <input type="text" ng-model="name">
+            <a>Pass</a>
+            <input type="text" ng-model="pass">
+            <button>
+                <a ng-click="Edit()">Update</a>
+            </button>
+        </div>
+
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>name</th>
+                <th>Email</th>
+
+            </tr>
+            <tr ng-repeat="cuss in users">
+                <td>{{cuss.ID}}</td>
+                <td>{{cuss.name}}</td>
+                <td>{{cuss.Email}}</td>
+                <td>
+                    <button>
+                        <a ng-click="DeleteUser(cuss.ID)">Delete</a>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

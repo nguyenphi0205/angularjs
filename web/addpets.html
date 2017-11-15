@@ -1,0 +1,93 @@
+<html ng-app="demoadd">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+</head>
+
+<body>
+    <script>
+        var app = angular.module('demoadd', [])
+            .controller('addpet', function ($scope, $http) {
+                var url = 'http://localhost:60610/api/PETS/Addpets';
+                // console.log(UserID);
+                //   var urlnew= "/?UserID=0&UserName=&Password=&firstname=&lastname=&DOB=&email=&gender=&phone=&address=&role='user'";
+            //      function dataURItoBlob(dataURI) {
+            //         var binary = atob(dataURI.split(',')[1]);
+            //         var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            //         var array = [];
+            //         for (var i = 0; i < binary.length; i++) {
+            //             array.push(binary.charCodeAt(i));
+            //         }
+            //         return new Blob([new Uint8Array(array)], {
+            //             type: mimeString
+            //         });
+            //     }
+
+            // });
+
+        $scope.submit = function () {
+
+            // console.log($scope.name);
+            // console.log($scope.pass);
+            $http({
+                method: 'POST',
+                url: url,
+                data: {
+                    ProductName: $scope.name,
+                    Price: $scope.price,
+                    Image: $scope.image,
+                    Description: $scope.des,
+                    Quantity: $scope.quant
+                },
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(function successCallback(response) {
+
+                // alert('thanh cong');
+                // window.location = "userDemo.html";
+                console.log('thanh cong');
+            }, function errorCallback(response) {
+                console.log('Error');
+            });
+        };
+            });
+    </script>
+    <div ng-controller="addpet">
+        <div>name</div>
+        <div>
+            <input type="text" ng-model="name" />
+        </div>
+        <br/>
+        <div>price</div>
+        <div>
+            <input type="text" ng-model="price" />
+        </div>
+        <br/>
+        <div>imge pet</div>
+        <div>
+            <input type="file"  ng-selected="image" />
+        </div>
+        <br/>
+        <div>description</div>
+        <div>
+            <textarea cols=20 rows=5 ng-model="des"></textarea>
+        </div>
+        <br/>
+        <div>quantity</div>
+        <div>
+            <input type="text" ng-model="quant" />
+        </div>
+        <br/>
+        <div>
+            <button ng-click="submit()">add</button>
+        </div>
+    </div>
+
+</body>
+
+</html>

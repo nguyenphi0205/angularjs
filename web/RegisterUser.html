@@ -1,0 +1,109 @@
+<html ng-app="demoRegister">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+        var app = angular.module('demoRegister', [])
+            .controller('Register', function ($scope, $http) {
+                var url = 'http://localhost:60610/api/User/AddUser';
+                // console.log(UserID);
+                //   var urlnew= "/?UserID=0&UserName=&Password=&firstname=&lastname=&DOB=&email=&gender=&phone=&address=&role='user'";
+
+                $scope.submit = function () {
+                    console.log($scope.username);
+                    console.log($scope.pass);
+                    $http({
+                        method: 'POST',
+                        url: url,
+
+                        data: {
+                            UserName: $scope.username,
+                            password: $scope.pass,
+                            // "UserID": 0,
+                            // "UserName": "a",
+                            // "Password": "123"
+
+                            firstname: $scope.Firstname,
+                            lastname: $scope.Lastname,
+                            userDOB: $scope.UserDOB,
+                            userEmail: $scope.UserEmail,
+                            userGender: $scope.UserGender,
+                            userPhone: $scope.UserPhone,
+                            userAddress: $scope.UserAddress,
+                            userRole: 'user'
+                        },
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    }).then(function successCallback(response) {
+
+                        alert('thanh cong');
+                        window.location="userDemo.html";
+                        console.log('thanh cong');
+                    }, function errorCallback(response) {
+                        console.log('Error');
+                    });
+                };
+            });
+    </script>
+    <div ng-controller="Register">
+        <div style="padding: 10px">
+            <input type="text" placeholder="ID" hidden data-ng-model="UserID" />
+        </div>
+        <div style="padding: 10px">
+            <a>Username</a>
+            <input type="text" placeholder="username" ng-model="username" />
+        </div>
+
+        <div style="padding: 10px">
+            <a>password</a>
+            <input type="password" placeholder="password" ng-model="pass">
+        </div>
+        <div style="padding: 10px">
+            <a>firstname</a>
+            <input type="text" placeholder="firstname" ng-model="Firstname" />
+        </div>
+        <div style="padding: 10px">
+            <a>lastname</a>
+            <input type="text" placeholder="lastname" ng-model="Lastname" />
+        </div>
+        <div style="padding: 10px">
+            <a>email</a>
+            <input type="text" placeholder="email" ng-model="UserEmail" />
+        </div>
+        <div style="padding: 10px">
+            <a>dob</a>
+            <input type="text" placeholder="DOB" ng-model="UserDOB" />
+        </div>
+        <div style="padding: 10px">
+            <a>gender</a>
+            <input type="text" placeholder="gender" ng-model="UserGender" />
+        </div>
+        <div style="padding: 10px">
+            <a>phone</a>
+            <input type="text" placeholder="phone" ng-model="UserPhone" />
+        </div>
+        <div style="padding: 10px">
+            <a>
+                addresss
+            </a>
+            <input type="text" placeholder="address" ng-model="UserAddress" />
+        </div>
+        <div style="padding: 10px">
+            <input type="text" placeholder="role" hidden ng-model="UserRole" />
+        </div>
+        <div>
+            <input type="submit" value="submit" ng-click="submit()" />
+        </div>
+        </form>
+    </div>
+</body>
+
+</html>
